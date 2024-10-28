@@ -8,7 +8,7 @@ app = Flask(__name__)
 # Set the path for the master image
 MASTER_IMAGE_PATH = 'images/20241018_074456.jpg' 
 
-@app.route('/')
+@app.route('/') 
 def index():
     return render_template('index.html')
 
