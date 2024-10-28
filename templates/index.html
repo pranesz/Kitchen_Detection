@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload and Comparison</title>
+</head>
+<body>
+    <h1>Image Upload and Comparison</h1>
+
+    <h2>Upload User Image</h2>
+    <form id="userImageForm">
+        <input type="file" id="userImage" accept="image/*" required>
+        <button type="submit">Upload User Image</button>
+    </form>
+
+    <h2>Results</h2>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('userImageForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData();
+            const userImage = document.getElementById('userImage').files[0];
+            formData.append('user_image', userImage);
+
+            const response = await fetch('/upload_user', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                document.getElementById('result').innerHTML = `
+                    <p>Similarity Score: ${result.similarity_score.toFixed(4)}</p>
+                    <p>Result: ${result.result}</p>
+                `;
+            } else {
+                document.getElementById('result').innerHTML = `
+                    <p>Error: ${result.error}</p>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
